@@ -1,0 +1,1 @@
+sshpass -p "dev" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p222 root@127.0.0.1
