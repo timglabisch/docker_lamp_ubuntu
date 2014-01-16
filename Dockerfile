@@ -26,7 +26,7 @@ RUN pecl install xdebug
 RUN echo zend_extentsion=`find /usr/lib/ -iname xdebug.so` > /etc/php5/conf.d/_xdebug.ini
 
 # php config
-ADD ./server/php.ini /etc/php5/cli/php.ini
+ADD ./server/php.ini /etc/php5/apache2/php.ini
 
 # mysql config
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
