@@ -1,0 +1,8 @@
+tg_docker_demo:
+    resource: "@TgDockerDemoBundle/Resources/config/routing.xml"
+    prefix:   /
+
+tg_docker_demo_controllers:
+    resource: "@TgDockerDemoBundle/Controller"
+    type: annotation
+

@@ -9,7 +9,7 @@ RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -s /bin/true /sbin/initctl
 
 # Basic Requirements
-RUN apt-get -y install mysql-server mysql-client apache2 libapache2-mod-php5 pwgen python-setuptools curl unzip make openssh-server
+RUN apt-get -y install mysql-server mysql-client apache2 libapache2-mod-php5 pwgen python-setuptools curl unzip make openssh-server curl
 
 # ssh
 RUN mkdir -p /var/run/sshd
@@ -36,8 +36,6 @@ ADD ./server/php.ini /etc/php5/apache2/php.ini
 # mysql config
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
-
-
 # apache
 RUN chown -R www-data:www-data /var/www/
 
@@ -48,6 +46,11 @@ ADD ./server/apache-vhost /etc/apache2/sites-enabled/000-default
 # php-fpm config
 RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
 RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf
+
+# composer
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+
 
 RUN /usr/bin/easy_install supervisor
 
