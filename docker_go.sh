@@ -27,7 +27,6 @@ sudo docker run \
     -p $port_http:80 \
     -p $port_ssh:22 \
     -p $port_mysql:3306 \
-    -p $port_xdebug:9000 \
     -v $pwd/htdocs:/var/www \
     -v $pwd/shared/mysql_databases:/var/lib/mysql \
     $vmname

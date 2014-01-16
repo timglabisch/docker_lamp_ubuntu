@@ -23,10 +23,15 @@ RUN apt-get -y install php5-fpm php5-mysql php-apc php5-curl php5-gd php5-intl p
 # php debug
 RUN pecl install xdebug
 # Enable XDebug
-RUN echo zend_extentsion=`find /usr/lib/ -iname xdebug.so` > /etc/php5/conf.d/_xdebug.ini
+RUN echo zend_extension=`find /usr/lib/ -iname xdebug.so` > /etc/php5/conf.d/_xdebug.ini
+ADD ./server/xdebug.ini /etc/php5/conf.d/xdebug.ini
+# Patch Xdebug remote host :)
+RUN sed -i "s/\[REMOTE\_HOST\]/`ip route | awk '/^default/ {print $3}'`/g" /etc/php5/conf.d/xdebug.ini
 
 # php config
 ADD ./server/php.ini /etc/php5/apache2/php.ini
+
+#RUN sed -i s/[]// /etc/php5/conf.d/_xdebug.ini
 
 # mysql config
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
@@ -52,7 +57,6 @@ ADD ./server/supervisord.conf /etc/supervisord.conf
 EXPOSE 80
 EXPOSE 22
 EXPOSE 3306
-EXPOSE 9000
 
 ADD ./server/start.sh /start.sh
 RUN chmod 755 /start.sh
